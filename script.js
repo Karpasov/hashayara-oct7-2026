@@ -33,7 +33,7 @@ const updateSoundToggle = () => {
   soundToggle.setAttribute("aria-pressed", String(soundEnabled));
   soundToggle.setAttribute("aria-label", soundEnabled ? "Pause site music" : "Play site music");
   const label = soundToggle.querySelector("span:last-child");
-  if (label) label.textContent = soundEnabled ? "Sound On" : "Sound";
+  if (label) label.textContent = soundEnabled ? "Pause song" : "Play song";
 };
 
 if (siteAudio) {

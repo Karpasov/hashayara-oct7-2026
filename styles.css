@@ -208,14 +208,14 @@ textarea {
 
 .hero-visual img,
 .hero-visual video {
-  filter: saturate(0.82) contrast(0.92) brightness(0.82);
+  filter: saturate(0.94) contrast(0.96) brightness(1.08);
 }
 
 .hero-scrim {
   z-index: 1;
   background:
-    linear-gradient(90deg, rgba(22, 31, 28, 0.74) 0%, rgba(22, 31, 28, 0.48) 38%, rgba(22, 31, 28, 0.14) 76%),
-    linear-gradient(180deg, rgba(22, 31, 28, 0.34), rgba(22, 31, 28, 0.58));
+    linear-gradient(90deg, rgba(22, 31, 28, 0.58) 0%, rgba(22, 31, 28, 0.34) 38%, rgba(22, 31, 28, 0.06) 76%),
+    linear-gradient(180deg, rgba(22, 31, 28, 0.18), rgba(22, 31, 28, 0.42));
 }
 
 .hero-content {

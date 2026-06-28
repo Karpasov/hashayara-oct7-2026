@@ -1,11 +1,11 @@
 const header = document.querySelector(".site-header");
 const soundToggle = document.querySelector(".sound-toggle");
+const siteAudio = document.querySelector(".site-audio");
 const revealEls = document.querySelectorAll(".reveal");
 const quoteCards = document.querySelectorAll(".voice-card");
 const scheduleRows = document.querySelectorAll(".schedule-row");
 
 let soundEnabled = false;
-let chimePlayed = false;
 
 const revealObserver = new IntersectionObserver(
   (entries) => {
@@ -25,45 +25,38 @@ const updateHeader = () => {
   header.classList.toggle("is-scrolled", window.scrollY > 24);
 };
 
-const playChime = () => {
-  if (!soundEnabled || chimePlayed) return;
-  chimePlayed = true;
-
-  const AudioContext = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContext) return;
-
-  const context = new AudioContext();
-  const gain = context.createGain();
-  const first = context.createOscillator();
-  const second = context.createOscillator();
-
-  first.type = "sine";
-  second.type = "triangle";
-  first.frequency.value = 587.33;
-  second.frequency.value = 880;
-
-  gain.gain.setValueAtTime(0, context.currentTime);
-  gain.gain.linearRampToValueAtTime(0.08, context.currentTime + 0.03);
-  gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + 1.15);
-
-  first.connect(gain);
-  second.connect(gain);
-  gain.connect(context.destination);
-
-  first.start();
-  second.start(context.currentTime + 0.12);
-  first.stop(context.currentTime + 1);
-  second.stop(context.currentTime + 1.1);
-};
-
 window.addEventListener("scroll", () => {
   updateHeader();
-  playChime();
 });
 
-soundToggle.addEventListener("click", async () => {
-  soundEnabled = !soundEnabled;
+const updateSoundToggle = () => {
   soundToggle.setAttribute("aria-pressed", String(soundEnabled));
+  soundToggle.setAttribute("aria-label", soundEnabled ? "Pause site music" : "Play site music");
+  const label = soundToggle.querySelector("span:last-child");
+  if (label) label.textContent = soundEnabled ? "Sound On" : "Sound";
+};
+
+if (siteAudio) {
+  siteAudio.volume = 0.42;
+}
+
+soundToggle.addEventListener("click", async () => {
+  if (!siteAudio) return;
+
+  soundEnabled = !soundEnabled;
+  updateSoundToggle();
+
+  if (!soundEnabled) {
+    siteAudio.pause();
+    return;
+  }
+
+  try {
+    await siteAudio.play();
+  } catch (error) {
+    soundEnabled = false;
+    updateSoundToggle();
+  }
 });
 
 quoteCards.forEach((card) => {
